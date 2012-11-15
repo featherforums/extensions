@@ -75,6 +75,8 @@ class DispatcherTest extends PHPUnit_Framework_TestCase {
 	{
 		$app = new Illuminate\Foundation\Application;
 		
+		$app['events'] = new Illuminate\Events\Dispatcher;
+
 		$app['feather'] = new Feather\Feather($app);
 		$app['feather']['path.extensions'] = __DIR__;
 
