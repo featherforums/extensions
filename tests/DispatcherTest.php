@@ -5,6 +5,12 @@ use Mockery as m;
 class DispatcherTest extends PHPUnit_Framework_TestCase {
 
 
+	public function setUp()
+	{
+		require_once __DIR__.'/TestExtension/TestExtension.php';
+	}
+
+
 	public function tearDown()
 	{
 		m::close();
@@ -13,7 +19,7 @@ class DispatcherTest extends PHPUnit_Framework_TestCase {
 
 	public function testDispatcherRegistersExtensionsFromArray()
 	{
-		define('FEATHER_DATABASE', 'foo');
+		define('FEATHER_DATABASE', 'feather');
 
 		$app = new Illuminate\Foundation\Application;
 
@@ -23,7 +29,6 @@ class DispatcherTest extends PHPUnit_Framework_TestCase {
 		$app['cache'] = m::mock('Illuminate\Cache\FileStore');
 		$app['files'] = m::mock('Illuminate\Filesystem');
 
-		$app['cache']->shouldReceive('forget')->once();
 		$app['files']->shouldReceive('exists')->once()->andReturn(true);
 
 		$extension = new Feather\Models\Extension(array(

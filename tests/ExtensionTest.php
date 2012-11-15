@@ -5,6 +5,12 @@ use Mockery as m;
 class ExtensionTest extends PHPUnit_Framework_TestCase {
 
 
+	public function setUp()
+	{
+		require_once __DIR__.'/TestExtension/TestExtension.php';
+	}
+
+
 	public function tearDown()
 	{
 		m::close();
