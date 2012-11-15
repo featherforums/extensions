@@ -16,12 +16,13 @@
 	"require-dev": {
 		"mockery/mockery": "0.7.*",
 		"illuminate/foundation": ">=1.0.0",
-		"feather/core": ">=1.0.0"
+		"feather/foundation": ">=1.0.0"
 	},
 	"autoload": {
-		"psr-0": {
-			"Feather\\Extensions": "src/"
-		}
+		"classmap": [
+			"src/Feather/Extensions/Dispatcher.php",
+			"src/Feather/Extensions/Extension.php"
+		]
 	},
 	"minimum-stability": "dev"
 }
