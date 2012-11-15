@@ -57,6 +57,7 @@ abstract class Extension {
 	 */
 	private function bindEvent($type, $event, $handler)
 	{
+		// Set the current extension instance so we can use it within the event closure.
 		$extension = $this;
 
 		$this->app['events']->$type($event, function($parameters = array()) use ($extension, $handler)
