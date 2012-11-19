@@ -18,10 +18,9 @@
 		"mockery/mockery": "0.7.*"
 	},
 	"autoload": {
-		"classmap": [
-			"src/Feather/Extensions/Dispatcher.php",
-			"src/Feather/Extensions/Extension.php"
-		]
+		"psr-0": {
+			"Feather\\Extensions": "src/"
+		}
 	},
 	"minimum-stability": "dev"
 }
