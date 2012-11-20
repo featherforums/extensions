@@ -2,8 +2,8 @@
 
 use FilesystemIterator;
 use Illuminate\Container;
-use Illuminate\Foundation\Application;
-use Feather\Models\Extension as FeatherExtension;
+use Illuminate\Filesystem;
+use Feather\Models\Extension as ExtensionModel;
 
 class Dispatcher extends Container {
 
@@ -15,6 +15,20 @@ class Dispatcher extends Container {
 	protected $app;
 
 	/**
+	 * Filesystem instance.
+	 * 
+	 * @var Illuminate\Filesystem
+	 */
+	protected $files;
+
+	/**
+	 * Path to extensions directory.
+	 * 
+	 * @var string
+	 */
+	protected $path;
+
+	/**
 	 * Started extensions.
 	 * 
 	 * @var array
@@ -22,12 +36,25 @@ class Dispatcher extends Container {
 	protected $started = array();
 
 	/**
-	 * Create a new extension dispatcher instance.
+	 * Create a new dispatcher instance.
 	 * 
-	 * @param  Illuminate\Foundation\Application  $app
+	 * @param  Illuminate\Filesystem  $files
+	 * @param  string  $path
 	 * @return void
 	 */
-	public function __construct(Application $app)
+	public function __construct(Filesystem $files, $path)
+	{
+		$this->files = $files;
+		$this->path = $path;
+	}
+
+	/**
+	 * Set the Laravel application instance.
+	 * 
+	 * @param  Illuminate\Container  $app
+	 * @return void
+	 */
+	public function setApplication(Container $app)
 	{
 		$this->app = $app;
 	}
@@ -52,11 +79,11 @@ class Dispatcher extends Container {
 	 * @param  Feather\Models\Extension  $extension
 	 * @return void
 	 */
-	public function register(FeatherExtension $extension)
+	public function register(ExtensionModel $extension)
 	{
-		$path = $this->app['feather']['path.extensions'].'/'.$extension->location;
+		$path = $this->path.'/'.$extension->location;
 
-		if ($this->app['files']->exists($path))
+		if ($this->files->exists($path))
 		{
 			$extension->path = $path;
 

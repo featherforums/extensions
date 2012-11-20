@@ -19,15 +19,13 @@ class ExtensionTest extends PHPUnit_Framework_TestCase {
 
 	public function testExtensionsAreBootstrapped()
 	{
-		$app = $this->getApplication();
+		list($app, $dispatcher) = $this->getApplicationAndDispatcher();
 
 		$extension = new Feather\Models\Extension(array(
 			'location' => 'TestExtension',
 			'identifier' => 'testextension',
 			'auto' => true
 		));
-
-		$dispatcher = new Feather\Extensions\Dispatcher($app);
 
 		$dispatcher->register($extension);
 
@@ -37,15 +35,13 @@ class ExtensionTest extends PHPUnit_Framework_TestCase {
 
 	public function testExtensionsCanListen()
 	{
-		$app = $this->getApplication();
+		list($app, $dispatcher) = $this->getApplicationAndDispatcher();
 
 		$extension = new Feather\Models\Extension(array(
 			'location' => 'TestExtension',
 			'identifier' => 'testextension',
 			'auto' => true
 		));
-
-		$dispatcher = new Feather\Extensions\Dispatcher($app);
 
 		$dispatcher->register($extension);
 
@@ -60,15 +56,13 @@ class ExtensionTest extends PHPUnit_Framework_TestCase {
 
 	public function testExtensionsCanOverride()
 	{
-		$app = $this->getApplication();
+		list($app, $dispatcher) = $this->getApplicationAndDispatcher();
 
 		$extension = new Feather\Models\Extension(array(
 			'location' => 'TestExtension',
 			'identifier' => 'testextension',
 			'auto' => true
 		));
-
-		$dispatcher = new Feather\Extensions\Dispatcher($app);
 
 		$dispatcher->register($extension);
 
@@ -88,15 +82,13 @@ class ExtensionTest extends PHPUnit_Framework_TestCase {
 
 	public function testExtensionsCanUseMethods()
 	{
-		$app = $this->getApplication();
-
+		list($app, $dispatcher) = $this->getApplicationAndDispatcher();
+		
 		$extension = new Feather\Models\Extension(array(
 			'location' => 'TestExtension',
 			'identifier' => 'testextension',
 			'auto' => true
 		));
-
-		$dispatcher = new Feather\Extensions\Dispatcher($app);
 
 		$dispatcher->register($extension);
 
@@ -106,19 +98,20 @@ class ExtensionTest extends PHPUnit_Framework_TestCase {
 	}
 
 
-	protected function getApplication()
+	protected function getApplicationAndDispatcher()
 	{
-		$app = new Illuminate\Foundation\Application;
+		$app = new Illuminate\Container;
 
 		$app['events'] = new Illuminate\Events\Dispatcher;
 
-		$app['feather'] = new Illuminate\Foundation\Application;
-		$app['feather']['path.extensions'] = __DIR__;
-		
 		$app['files'] = m::mock('Illuminate\Filesystem');
 		$app['files']->shouldReceive('exists')->once()->andReturn(true);
 
-		return $app;
+		$dispatcher = new Feather\Extensions\Dispatcher($app['files'], __DIR__);
+
+		$dispatcher->setApplication($app);
+
+		return array($app, $dispatcher);
 	}
 
 

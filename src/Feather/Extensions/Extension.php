@@ -1,23 +1,23 @@
 <?php namespace Feather\Extensions;
 
-use Illuminate\Foundation\Application;
+use Illuminate\Container;
 
-abstract class Extension {
+class Extension {
 
 	/**
-	 * Illuminate application instance.
+	 * Laravel application instance.
 	 * 
-	 * @var Illuminate\Foundation\Application
+	 * @var Illuminate\Container
 	 */
 	protected $app;
 
 	/**
 	 * Create a new extension instance.
 	 * 
-	 * @param  Illuminate\Foundation\Application  $app
+	 * @param  Illuminate\Container  $app
 	 * @return void
 	 */
-	public function __construct(Application $app)
+	public function __construct(Container $app)
 	{
 		$this->app = $app;
 	}

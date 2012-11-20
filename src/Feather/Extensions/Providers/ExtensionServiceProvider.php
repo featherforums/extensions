@@ -16,8 +16,10 @@ class ExtensionServiceProvider extends ServiceProvider {
 	{
 		$app['feather']['extensions'] = $app->share(function() use ($app)
 		{
-			return new Dispatcher($app);
+			return new Dispatcher($app['files'], $app['feather']['path.extensions']);
 		});
+
+		$app['feather']['extensions']->setApplication($app);
 
 		$this->registerCommands($app);
 	}

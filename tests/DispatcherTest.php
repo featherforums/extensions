@@ -21,15 +21,13 @@ class DispatcherTest extends PHPUnit_Framework_TestCase {
 	{
 		define('FEATHER_DATABASE', 'feather');
 
-		$app = $this->getApplication();
+		$dispatcher = $this->getDispatcher();
 
 		$extension = new Feather\Models\Extension(array(
 			'location' => '/',
 			'identifier' => 'foobar',
 			'auto' => false
 		));
-
-		$dispatcher = new Feather\Extensions\Dispatcher($app);
 
 		$dispatcher->registerExtensions(array($extension));
 
@@ -40,15 +38,13 @@ class DispatcherTest extends PHPUnit_Framework_TestCase {
 
 	public function testDispatcherRegisterExtension()
 	{
-		$app = $this->getApplication();
+		$dispatcher = $this->getDispatcher();
 
 		$extension = new Feather\Models\Extension(array(
 			'location' => '/',
 			'identifier' => 'foobar',
 			'auto' => false
 		));
-
-		$dispatcher = new Feather\Extensions\Dispatcher($app);
 
 		$dispatcher->register($extension);
 
@@ -59,17 +55,13 @@ class DispatcherTest extends PHPUnit_Framework_TestCase {
 
 	public function testDispatcherAutoStartExtension()
 	{
-		$app = $this->getApplication();
-		
-		$app['events'] = new Illuminate\Events\Dispatcher;
+		$dispatcher = $this->getDispatcher();
 
 		$extension = new Feather\Models\Extension(array(
 			'location' => 'TestExtension',
 			'identifier' => 'testextension',
 			'auto' => true
 		));
-
-		$dispatcher = new Feather\Extensions\Dispatcher($app);
 
 		$dispatcher->register($extension);
 
@@ -78,19 +70,20 @@ class DispatcherTest extends PHPUnit_Framework_TestCase {
 	}
 
 
-	protected function getApplication()
+	protected function getDispatcher()
 	{
-		$app = new Illuminate\Foundation\Application;
+		$app = new Illuminate\Container;
 
-		$app['feather'] = new Illuminate\Foundation\Application;
-		$app['feather']['path.extensions'] = __DIR__;
+		$app['events'] = new Illuminate\Events\Dispatcher;
 
-		$app['cache'] = m::mock('Illuminate\Cache\FileStore');
-		$app['files'] = m::mock('Illuminate\Filesystem');
+		$files = m::mock('Illuminate\Filesystem');
+		$files->shouldReceive('exists')->once()->andReturn(true);
 
-		$app['files']->shouldReceive('exists')->once()->andReturn(true);
+		$dispatcher = new Feather\Extensions\Dispatcher($files, __DIR__);
 
-		return $app;
+		$dispatcher->setApplication($app);
+
+		return $dispatcher;
 	}
 
 
