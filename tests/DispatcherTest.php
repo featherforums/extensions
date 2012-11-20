@@ -21,15 +21,7 @@ class DispatcherTest extends PHPUnit_Framework_TestCase {
 	{
 		define('FEATHER_DATABASE', 'feather');
 
-		$app = new Illuminate\Foundation\Application;
-
-		$app['feather'] = new Feather\Feather($app);
-		$app['feather']['path.extensions'] = __DIR__;
-
-		$app['cache'] = m::mock('Illuminate\Cache\FileStore');
-		$app['files'] = m::mock('Illuminate\Filesystem');
-
-		$app['files']->shouldReceive('exists')->once()->andReturn(true);
+		$app = $this->getApplication();
 
 		$extension = new Feather\Models\Extension(array(
 			'location' => '/',
@@ -48,13 +40,7 @@ class DispatcherTest extends PHPUnit_Framework_TestCase {
 
 	public function testDispatcherRegisterExtension()
 	{
-		$app = new Illuminate\Foundation\Application;
-
-		$app['feather'] = new Feather\Feather($app);
-		$app['feather']['path.extensions'] = __DIR__;
-
-		$app['files'] = m::mock('Illuminate\Filesystem');
-		$app['files']->shouldReceive('exists')->once()->andReturn(true);
+		$app = $this->getApplication();
 
 		$extension = new Feather\Models\Extension(array(
 			'location' => '/',
@@ -73,15 +59,9 @@ class DispatcherTest extends PHPUnit_Framework_TestCase {
 
 	public function testDispatcherAutoStartExtension()
 	{
-		$app = new Illuminate\Foundation\Application;
+		$app = $this->getApplication();
 		
 		$app['events'] = new Illuminate\Events\Dispatcher;
-
-		$app['feather'] = new Feather\Feather($app);
-		$app['feather']['path.extensions'] = __DIR__;
-
-		$app['files'] = m::mock('Illuminate\Filesystem');
-		$app['files']->shouldReceive('exists')->once()->andReturn(true);
 
 		$extension = new Feather\Models\Extension(array(
 			'location' => 'TestExtension',
@@ -95,6 +75,22 @@ class DispatcherTest extends PHPUnit_Framework_TestCase {
 
 		$this->assertArrayHasKey('Feather\Extensions\TestExtension\TestExtension', $extension->loaded);
 		$this->assertEquals('bar', $extension->loaded['Feather\Extensions\TestExtension\TestExtension']->foo());
+	}
+
+
+	protected function getApplication()
+	{
+		$app = new Illuminate\Foundation\Application;
+
+		$app['feather'] = new Illuminate\Foundation\Application;
+		$app['feather']['path.extensions'] = __DIR__;
+
+		$app['cache'] = m::mock('Illuminate\Cache\FileStore');
+		$app['files'] = m::mock('Illuminate\Filesystem');
+
+		$app['files']->shouldReceive('exists')->once()->andReturn(true);
+
+		return $app;
 	}
 
 

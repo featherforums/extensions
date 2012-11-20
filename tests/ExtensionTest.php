@@ -19,15 +19,7 @@ class ExtensionTest extends PHPUnit_Framework_TestCase {
 
 	public function testExtensionsAreBootstrapped()
 	{
-		$app = new Illuminate\Foundation\Application;
-
-		$app['events'] = new Illuminate\Events\Dispatcher;
-
-		$app['feather'] = new Feather\Feather($app);
-		$app['feather']['path.extensions'] = __DIR__;
-
-		$app['files'] = m::mock('Illuminate\Filesystem');
-		$app['files']->shouldReceive('exists')->once()->andReturn(true);
+		$app = $this->getApplication();
 
 		$extension = new Feather\Models\Extension(array(
 			'location' => 'TestExtension',
@@ -45,15 +37,7 @@ class ExtensionTest extends PHPUnit_Framework_TestCase {
 
 	public function testExtensionsCanListen()
 	{
-		$app = new Illuminate\Foundation\Application;
-
-		$app['events'] = new Illuminate\Events\Dispatcher;
-
-		$app['feather'] = new Feather\Feather($app);
-		$app['feather']['path.extensions'] = __DIR__;
-
-		$app['files'] = m::mock('Illuminate\Filesystem');
-		$app['files']->shouldReceive('exists')->once()->andReturn(true);
+		$app = $this->getApplication();
 
 		$extension = new Feather\Models\Extension(array(
 			'location' => 'TestExtension',
@@ -76,15 +60,7 @@ class ExtensionTest extends PHPUnit_Framework_TestCase {
 
 	public function testExtensionsCanOverride()
 	{
-		$app = new Illuminate\Foundation\Application;
-
-		$app['events'] = new Illuminate\Events\Dispatcher;
-
-		$app['feather'] = new Feather\Feather($app);
-		$app['feather']['path.extensions'] = __DIR__;
-
-		$app['files'] = m::mock('Illuminate\Filesystem');
-		$app['files']->shouldReceive('exists')->once()->andReturn(true);
+		$app = $this->getApplication();
 
 		$extension = new Feather\Models\Extension(array(
 			'location' => 'TestExtension',
@@ -112,15 +88,7 @@ class ExtensionTest extends PHPUnit_Framework_TestCase {
 
 	public function testExtensionsCanUseMethods()
 	{
-		$app = new Illuminate\Foundation\Application;
-
-		$app['events'] = new Illuminate\Events\Dispatcher;
-
-		$app['feather'] = new Feather\Feather($app);
-		$app['feather']['path.extensions'] = __DIR__;
-
-		$app['files'] = m::mock('Illuminate\Filesystem');
-		$app['files']->shouldReceive('exists')->once()->andReturn(true);
+		$app = $this->getApplication();
 
 		$extension = new Feather\Models\Extension(array(
 			'location' => 'TestExtension',
@@ -135,6 +103,22 @@ class ExtensionTest extends PHPUnit_Framework_TestCase {
 		$extension->loaded['Feather\Extensions\TestExtension\TestExtension']->listen('foobar', 'foo');
 
 		$this->assertEquals('bar', $app['events']->first('foobar'));
+	}
+
+
+	protected function getApplication()
+	{
+		$app = new Illuminate\Foundation\Application;
+
+		$app['events'] = new Illuminate\Events\Dispatcher;
+
+		$app['feather'] = new Illuminate\Foundation\Application;
+		$app['feather']['path.extensions'] = __DIR__;
+		
+		$app['files'] = m::mock('Illuminate\Filesystem');
+		$app['files']->shouldReceive('exists')->once()->andReturn(true);
+
+		return $app;
 	}
 
 
