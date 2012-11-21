@@ -108,6 +108,6 @@ class Extension {
 	 * 
 	 * @return void
 	 */
-	public function remove(){}
+	public function removed(){}
 
 }
