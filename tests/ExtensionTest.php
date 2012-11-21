@@ -98,6 +98,25 @@ class ExtensionTest extends PHPUnit_Framework_TestCase {
 	}
 
 
+	public function testExtensionPerformsBasicOperations()
+	{
+		list($app, $dispatcher) = $this->getApplicationAndDispatcher();
+		
+		$extension = new Feather\Models\Extension(array(
+			'location' => 'TestExtension',
+			'identifier' => 'testextension',
+			'auto' => true
+		));
+
+		$dispatcher->register($extension);
+
+		$extension->loaded['Feather\Extensions\TestExtension\TestExtension']->installed();
+		$extension->loaded['Feather\Extensions\TestExtension\TestExtension']->enabled();
+		$extension->loaded['Feather\Extensions\TestExtension\TestExtension']->disabled();
+		$extension->loaded['Feather\Extensions\TestExtension\TestExtension']->removed();
+	}
+
+
 	protected function getApplicationAndDispatcher()
 	{
 		$app = new Illuminate\Container;
