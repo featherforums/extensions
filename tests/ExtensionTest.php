@@ -111,8 +111,8 @@ class ExtensionTest extends PHPUnit_Framework_TestCase {
 		$dispatcher->register($extension);
 
 		$extension->loaded['Feather\Extensions\TestExtension\TestExtension']->installed();
-		$extension->loaded['Feather\Extensions\TestExtension\TestExtension']->enabled();
-		$extension->loaded['Feather\Extensions\TestExtension\TestExtension']->disabled();
+		$extension->loaded['Feather\Extensions\TestExtension\TestExtension']->activated();
+		$extension->loaded['Feather\Extensions\TestExtension\TestExtension']->deactivated();
 		$extension->loaded['Feather\Extensions\TestExtension\TestExtension']->removed();
 	}
 

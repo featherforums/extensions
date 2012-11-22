@@ -90,18 +90,18 @@ class Extension {
 	public function installed(){}
 
 	/**
-	 * Executed when an extension is enabled.
+	 * Executed when an extension is activated.
 	 * 
 	 * @return void
 	 */
-	public function enabled(){}
+	public function activated(){}
 
 	/**
-	 * Executed when an extension is disabled.
+	 * Executed when an extension is deactivated.
 	 * 
 	 * @return void
 	 */
-	public function disabled(){}
+	public function deactivated(){}
 
 	/**
 	 * Executed when an extension is removed.
