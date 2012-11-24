@@ -139,4 +139,9 @@ class Dispatcher extends Container {
 		}
 	}
 
+	public function fire()
+	{
+		
+	}
+
 }

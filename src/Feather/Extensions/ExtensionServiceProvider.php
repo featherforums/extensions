@@ -32,7 +32,7 @@ class ExtensionServiceProvider extends ServiceProvider {
 	{
 		$app['command.feather.extension'] = $app->share(function()
 		{
-			return new Console\FeatherExtensionCommand;
+			return new Console\ExtensionCommand;
 		});
 
 		$app['events']->listen('artisan.start', function($artisan)
