@@ -3,7 +3,7 @@
 use Illuminate\Filesystem;
 use Illuminate\Console\Command;
 
-class FeatherExtensionCommand extends Command {
+class ExtensionCommand extends Command {
 
 	/**
 	 * The console command name.
