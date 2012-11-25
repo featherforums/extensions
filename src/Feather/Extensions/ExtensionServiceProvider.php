@@ -18,27 +18,6 @@ class ExtensionServiceProvider extends ServiceProvider {
 		});
 
 		$app['feather']['extensions']->setApplication($app);
-
-		$this->registerCommands($app);
-	}
-
-	/**
-	 * Register the console commands.
-	 * 
-	 * @param  Illuminate\Foundation\Application  $app
-	 * @return void
-	 */
-	protected function registerCommands($app)
-	{
-		$app['command.feather.extension'] = $app->share(function()
-		{
-			return new Console\ExtensionCommand;
-		});
-
-		$app['events']->listen('artisan.start', function($artisan)
-		{
-			$artisan->resolve('command.feather.extension');
-		});
 	}
 
 }
